@@ -12,5 +12,12 @@
     "eslint": "^4.19.1",
     "mocha": "^5.1.1",
     "testdouble": "^3.8.0"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "circular-json": "^0.5.3",
+    "sax-stream": "^1.2.3",
+    "unzipper": "^0.8.13"
   }
 }

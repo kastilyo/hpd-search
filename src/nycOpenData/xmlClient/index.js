@@ -1,12 +1,12 @@
 const Bacon = require('baconjs');
 
 const TYPES = require('./types')
-  , getTagsByType = require('./getTagsByType');
+  , parseTagsByType = require('./parseTagsByType');
 
 const getStream =
   type => Bacon.fromBinder(
     sink =>
-      getTagsByType(type)
+      parseTagsByType(type)
         .then(
           stream => {
             stream.on('data', sink);

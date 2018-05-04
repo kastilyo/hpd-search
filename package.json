@@ -14,10 +14,12 @@
     "testdouble": "^3.8.0"
   },
   "dependencies": {
+    "@kastilyo/rabbit-hole": "0.0.4",
     "axios": "^0.18.0",
     "baconjs": "^2.0.7",
     "cheerio": "^1.0.0-rc.2",
     "circular-json": "^0.5.3",
+    "dotenv": "^5.0.1",
     "sax-stream": "^1.2.3",
     "unzipper": "^0.8.13"
   }

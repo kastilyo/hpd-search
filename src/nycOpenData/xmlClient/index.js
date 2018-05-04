@@ -5,7 +5,7 @@ const TYPES = require('./types')
 
 const getStream =
   type => Bacon.fromBinder(
-    sink =>
+    sink => {
       parseTagsByType(type)
         .then(
           stream => {
@@ -13,7 +13,9 @@ const getStream =
             stream.on('end', () => sink(new Bacon.End()));
             stream.on('error', error => sink(new Bacon.Error(error)));
           }
-        )
+        );
+      return () => { };
+    }
   );
 
 const createFilter =

@@ -15,6 +15,8 @@ RabbitHole.create({
     .then(consumer => consumer.use(RabbitHole.Middleware.Consumer.json({ JSON }))),
   rabbitHole,
 ])).then(([publisher, consumer, rabbitHole]) => {
+  console.log('Listening...');
+
   process.once('SIGINT', () => {
     console.log('Closing...');
     rabbitHole.close();
@@ -36,8 +38,9 @@ RabbitHole.create({
 
     console.log(`Received message: ${JSON.stringify(message)}`);
 
+    const filterOptions = message.json;
     const xmlDataStream = NycOpenData.XmlClient.getStream(type)
-      .filter(NycOpenData.XmlClient.createFilter(message.json));
+      .filter(NycOpenData.XmlClient.Filter.create(type, filterOptions));
 
     xmlDataStream.onEnd(() => ack(message));
     xmlDataStream.onValue(data => {

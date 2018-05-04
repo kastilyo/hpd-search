@@ -4,7 +4,7 @@ const TYPES = require('./types')
   , Filter = require('./filter')
   , parseTagsByType = require('./parseTagsByType');
 
-const getStream =
+const get =
   type => Bacon.fromBinder(
     sink => {
       parseTagsByType(type)
@@ -22,5 +22,5 @@ const getStream =
 module.exports = {
   Filter,
   TYPES,
-  getStream,
+  get,
 };

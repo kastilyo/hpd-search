@@ -42,11 +42,11 @@ RabbitHole.create({
     const xmlDataStream = NycOpenData.XmlClient.getStream(type)
       .filter(NycOpenData.XmlClient.Filter.create(type, filterOptions));
 
-    xmlDataStream.onEnd(() => ack(message));
-    xmlDataStream.onValue(data => {
-      console.log('Publishing message...');
-      publisher.publish(`${type}-xml.parsed`, data);
+    xmlDataStream.onEnd(() => {
+      console.log('Finished parsing. Acking...');
+      ack(message);
     });
+    xmlDataStream.onValue(data => publisher.publish(`${type}-xml.parsed`, data));
   });
 });
 

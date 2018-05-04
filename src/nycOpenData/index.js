@@ -1,3 +1,3 @@
 module.exports = {
-  XmlClient: require('./xmlClient'),
+  XmlStream: require('./xmlStream'),
 };

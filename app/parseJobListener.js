@@ -22,22 +22,18 @@ RabbitHole.create({
     rabbitHole.close();
   });
 
-  const sodaStream = NycOpenData.SodaStream.create(process.env.SODA_APP_TOKEN);
+  const nycOpenData = NycOpenData.create(process.env.SODA_APP_TOKEN);
 
   consumer.consume(({ message, ack, nack }) => {
     const [, typeSource] = message.fields.routingKey.split('.');
     const [type, source] = typeSource.split('-');
 
-    if (source !== 'xml' && source !== 'soda') {
+    if (!nycOpenData.isSupportedSource(source)) {
       console.log(`Unrecognized source, '${source}', provided`);
       return nack(message, false, false);
     }
 
-    const supportedTypes = source === 'xml'
-      ? NycOpenData.XmlStream.TYPES
-      : NycOpenData.SodaStream.TYPES;
-
-    if (Object.values(supportedTypes).indexOf(type) === -1) {
+    if (!nycOpenData.isSupportedType(source, type)) {
       console.log(`Unrecognized type, '${type}', provided`);
       return nack(message, false, false);
     }
@@ -45,11 +41,7 @@ RabbitHole.create({
     console.log(`Received message: ${JSON.stringify(message)}`);
 
     const filterOptions = message.json;
-
-    const dataStream = source === 'xml'
-      ? NycOpenData.XmlStream.get(type)
-        .filter(NycOpenData.XmlStream.Filter.create(type, filterOptions))
-      : sodaStream.get(type, filterOptions);
+    const dataStream = nycOpenData.getStream(source, type, filterOptions);
 
     dataStream.onEnd(() => {
       console.log('Finished parsing. Acking...');

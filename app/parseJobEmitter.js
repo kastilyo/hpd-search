@@ -1,15 +1,7 @@
-require('dotenv').config({
-  path: `${__dirname}/../config/.env`
-});
+const { RabbitHole, NycOpenData } = require('./bootstrap');
 
-const RabbitHole = require('@kastilyo/rabbit-hole')
-  , NycOpenData = require('./../src/nycOpenData');
-
-RabbitHole.create({
-  vhost: process.env.RABBIT_HOLE_VHOST,
-}).then(rabbitHole => Promise.all([
-  rabbitHole.MiddlewarePublisher.create(process.env.RABBIT_HOLE_EXCHANGE)
-    .then(publisher => publisher.use(RabbitHole.Middleware.Publisher.json({ JSON }))),
+RabbitHole.create().then(rabbitHole => Promise.all([
+  rabbitHole.createJsonPublisher(process.env.RABBIT_HOLE_EXCHANGE),
   rabbitHole,
 ])).then(([publisher, rabbitHole]) => {
   const routingKeys = [

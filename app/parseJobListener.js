@@ -1,18 +1,8 @@
-require('dotenv').config({
-  path: `${__dirname}/../config/.env`
-});
+const { RabbitHole, NycOpenData } = require('./bootstrap');
 
-const RabbitHole = require('@kastilyo/rabbit-hole')
-  , JSON = require('circular-json')
-  , NycOpenData = require('./../src/nycOpenData');
-
-RabbitHole.create({
-  vhost: process.env.RABBIT_HOLE_VHOST,
-}).then(rabbitHole => Promise.all([
-  rabbitHole.MiddlewarePublisher.create(process.env.RABBIT_HOLE_EXCHANGE)
-    .then(publisher => publisher.use(RabbitHole.Middleware.Publisher.json({ JSON }))),
-  rabbitHole.MiddlewareConsumer.create(process.env.RABBIT_HOLE_PARSE_QUEUE)
-    .then(consumer => consumer.use(RabbitHole.Middleware.Consumer.json({ JSON }))),
+RabbitHole.create().then(rabbitHole => Promise.all([
+  rabbitHole.createJsonPublisher(process.env.RABBIT_HOLE_EXCHANGE),
+  rabbitHole.createJsonConsumer(process.env.RABBIT_HOLE_PARSE_QUEUE),
   rabbitHole,
 ])).then(([publisher, consumer, rabbitHole]) => {
   console.log('Listening...');
@@ -22,7 +12,7 @@ RabbitHole.create({
     rabbitHole.close();
   });
 
-  const nycOpenData = NycOpenData.create(process.env.SODA_APP_TOKEN);
+  const nycOpenData = NycOpenData.create();
 
   consumer.consume(({ message, ack, nack }) => {
     const [, typeSource] = message.fields.routingKey.split('.');

@@ -21,6 +21,7 @@
     "circular-json": "^0.5.3",
     "csv-stream": "^0.2.0",
     "dotenv": "^5.0.1",
+    "elasticsearch": "^14.2.2",
     "sax-stream": "^1.2.3",
     "unzipper": "^0.8.13"
   }

@@ -47,5 +47,6 @@ const create =
 
 module.exports = {
   TYPES,
+  SOURCES,
   create,
 };

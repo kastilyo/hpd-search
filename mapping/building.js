@@ -1,6 +1,6 @@
 module.exports = {
   mapping: {
-    doc: {
+    building: {
       properties: {
         /** START OF FIELDS FROM HPD Open Data -  Housing New York Units by Building **/
         // Description: The Project ID is a unique numeric identifier assigned to each project by HPD.

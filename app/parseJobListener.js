@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { RabbitHole, NycOpenData } = require('./bootstrap');
 
 RabbitHole.create().then(rabbitHole => Promise.all([

@@ -7,8 +7,8 @@ const create =
       vhost: process.env.RABBIT_HOLE_VHOST,
     }).then(rh => ({
       ...rh,
-      createJsonPublisher: exchange =>
-        rh.MiddlewarePublisher.create(exchange)
+      createJsonPublisher: (exchange, options = {}) =>
+        rh.MiddlewarePublisher.create(exchange, options)
           .then(publisher => publisher.use(RabbitHole.Middleware.Publisher.json({ JSON }))),
       createJsonConsumer: queue =>
         rh.MiddlewareConsumer.create(queue)

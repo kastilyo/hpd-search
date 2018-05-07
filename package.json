@@ -23,6 +23,7 @@
     "dotenv": "^5.0.1",
     "elasticsearch": "^14.2.2",
     "luxon": "^1.2.0",
+    "ramda": "^0.25.0",
     "sax-stream": "^1.2.3",
     "unzipper": "^0.8.13"
   }

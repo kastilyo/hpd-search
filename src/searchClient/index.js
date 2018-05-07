@@ -22,6 +22,12 @@ const create =
     return {
       createIndex: (dateTime = DateTime.utc()) =>
         createIndex(client, dateTime),
+      bulk: body =>
+        client.bulk({
+          index: BASE_NAME,
+          _source: true,
+          body
+        })
     };
   };
 

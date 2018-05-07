@@ -1,4 +1,4 @@
-const { RabbitHole, NycOpenData } = require('./bootstrap');
+const { RabbitHole, NycOpenData } = require('./../bootstrap');
 
 RabbitHole.create().then(rabbitHole => Promise.all([
   rabbitHole.createJsonPublisher(process.env.RABBIT_HOLE_EXCHANGE),

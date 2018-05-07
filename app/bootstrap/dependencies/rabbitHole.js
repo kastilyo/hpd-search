@@ -1,5 +1,4 @@
-const RabbitHole = require('@kastilyo/rabbit-hole')
-  , JSON = require('circular-json');
+const RabbitHole = require('@kastilyo/rabbit-hole');
 
 const create =
   () =>
@@ -9,10 +8,10 @@ const create =
       ...rh,
       createJsonPublisher: exchange =>
         rh.MiddlewarePublisher.create(exchange)
-          .then(publisher => publisher.use(RabbitHole.Middleware.Publisher.json({ JSON }))),
+          .then(publisher => publisher.use(RabbitHole.Middleware.Publisher.json({ JSON: require('circular-json') }))),
       createJsonConsumer: (queue, options = {}) =>
         rh.MiddlewareConsumer.create(queue, options)
-          .then(consumer => consumer.use(RabbitHole.Middleware.Consumer.json({ JSON })))
+          .then(consumer => consumer.use(RabbitHole.Middleware.Consumer.json()))
     }));
 
 module.exports = {

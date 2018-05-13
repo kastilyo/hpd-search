@@ -46,5 +46,9 @@ module.exports = {
   },
   status: {
     type: 'keyword',
-  }
+  },
+  complaints: {
+    type: 'nested',
+    properties: require('./../complaint/properties'),
+  },
 };

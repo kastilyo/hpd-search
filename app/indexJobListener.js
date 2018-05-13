@@ -4,7 +4,7 @@ const Bacon = require('baconjs');
 const { RabbitHole } = require('./bootstrap');
 
 const SearchClient = require('./../src/searchClient');
-const Repository = require('./../src/Repository');
+const Repository = require('./../src/repository');
 
 const BATCH_SIZE = 1000;
 const BUFFER_TIMEOUT_MS = 5000;

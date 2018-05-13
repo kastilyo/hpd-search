@@ -34,17 +34,25 @@ RabbitHole.create().then(rabbitHole => Promise.all([
         [message.json.type]: [...groupedMessages[message.json.type], message],
       }), {
         building: [],
+        complaint: [],
       });
 
   messageStream.onValue(messages => {
     const groupedMessages = groupMessagesByType(messages);
 
     const buildings = groupedMessages.building.map(buildingMessage => buildingMessage.json.data);
+    const complaints = groupedMessages.complaint.map(complaintMessage => complaintMessage.json.data);
 
     buildings.length
       ? buildingRepository.upsert(...buildings)
         .then(result => publisher.publish('data.indexed', result))
         .then(() => Promise.all(groupedMessages.building.map(consumer.ack)))
+      : [];
+
+    complaints.length
+      ? buildingRepository.upsertComplaints(...complaints)
+        .then(result => Promise.all([result, publisher.publish('data.indexed', result)]))
+        .then(() => Promise.all(groupedMessages.complaint.map(consumer.ack)))
       : [];
   });
 });

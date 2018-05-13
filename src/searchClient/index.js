@@ -4,8 +4,6 @@ const mappings = require('./mappings');
 
 const BASE_NAME = 'hpd';
 
-const client = new elasticsearch.Client();
-
 const getExistingIndex =
   client =>
     client.indices.getAlias({ name: BASE_NAME })

@@ -2,4 +2,4 @@
 const SearchClient = require('./../../src/searchClient');
 
 const searchClient = SearchClient.create();
-searchClient.createIndex().then(data => console.log(data));
+searchClient.createIndexAndSetAlias().then(data => console.log(data));

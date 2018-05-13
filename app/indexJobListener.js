@@ -4,6 +4,7 @@ const Bacon = require('baconjs');
 const { RabbitHole } = require('./bootstrap');
 
 const SearchClient = require('./../src/searchClient');
+const Repository = require('./../src/Repository');
 
 const BATCH_SIZE = 1000;
 const BUFFER_TIMEOUT_MS = 5000;
@@ -21,19 +22,30 @@ RabbitHole.create().then(rabbitHole => Promise.all([
   });
 
   const searchClient = SearchClient.create();
+  const buildingRepository = Repository.Building.create(searchClient);
+
   const messageStream = Bacon.fromBinder(sink => consumer.consume(({ message }) => sink(message)))
     .bufferWithTimeOrCount(BUFFER_TIMEOUT_MS, BATCH_SIZE);
-  messageStream.onValue(messages => {
-    const body = messages
-      .reduce((bulkOperations, { json: { data, type } }) => [
-        ...bulkOperations,
-        { update: { _type: type, _id: data.id} },
-        { doc: data, doc_as_upsert: true },
-      ], []);
 
-    searchClient.bulk(body)
-      .then(result => publisher.publish('data.indexed', result))
-      .then(() => Promise.all(messages.map(consumer.ack)));
+  const groupMessagesByType =
+    messages =>
+      messages.reduce((groupedMessages, message) => ({
+        ...groupedMessages,
+        [message.json.type]: [...groupedMessages[message.json.type], message],
+      }), {
+        building: [],
+      });
+
+  messageStream.onValue(messages => {
+    const groupedMessages = groupMessagesByType(messages);
+
+    const buildings = groupedMessages.building.map(buildingMessage => buildingMessage.json.data);
+
+    buildings.length
+      ? buildingRepository.upsert(...buildings)
+        .then(result => publisher.publish('data.indexed', result))
+        .then(() => Promise.all(groupedMessages.building.map(consumer.ack)))
+      : [];
   });
 });
 

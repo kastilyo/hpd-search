@@ -51,4 +51,8 @@ module.exports = {
     type: 'nested',
     properties: require('./../complaint/properties'),
   },
+  violations: {
+    type: 'nested',
+    properties: require('./../violation/properties'),
+  },
 };

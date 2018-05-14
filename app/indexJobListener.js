@@ -35,6 +35,7 @@ RabbitHole.create().then(rabbitHole => Promise.all([
       }), {
         building: [],
         complaint: [],
+        violation: [],
       });
 
   messageStream.onValue(messages => {
@@ -42,18 +43,25 @@ RabbitHole.create().then(rabbitHole => Promise.all([
 
     const buildings = groupedMessages.building.map(buildingMessage => buildingMessage.json.data);
     const complaints = groupedMessages.complaint.map(complaintMessage => complaintMessage.json.data);
+    const violations = groupedMessages.violation.map(violationMessage => violationMessage.json.data);
 
-    buildings.length
+    const buildingMessagesP = buildings.length
       ? buildingRepository.upsert(...buildings)
         .then(result => publisher.publish('data.indexed', result))
-        .then(() => Promise.all(groupedMessages.building.map(consumer.ack)))
-      : [];
+      : Promise.resolve([]);
 
-    complaints.length
+    const complaintMessagesP = complaints.length
       ? buildingRepository.upsertComplaints(...complaints)
-        .then(result => Promise.all([result, publisher.publish('data.indexed', result)]))
-        .then(() => Promise.all(groupedMessages.complaint.map(consumer.ack)))
-      : [];
+        .then(result => publisher.publish('data.indexed', result))
+      : Promise.resolve([]);
+
+    const violationMessagesP = violations.length
+      ? buildingRepository.upsertViolations(...violations)
+        .then(result => publisher.publish('data.indexed', result))
+      : Promise.resolve([]);
+
+    Promise.all([violationMessagesP, buildingMessagesP, complaintMessagesP])
+      .then(() => Promise.all(messages.map(consumer.ack)));
   });
 });
 

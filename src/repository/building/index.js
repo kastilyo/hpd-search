@@ -7,6 +7,8 @@ const create =
         upsert(searchClient, buildings),
       upsertComplaints: (...complaints) =>
         upsertComplaints(searchClient, complaints),
+      upsertViolations: (...violations) =>
+        upsertViolations(searchClient, violations),
     });
 
 const buildBulkUpsertOperations =
@@ -23,6 +25,13 @@ const buildBulkUpsertComplaintOperations =
       ...operations.upsertComplaint(complaint),
     ], []);
 
+const buildBulkUpsertViolationOperations =
+  complaint =>
+    complaint.reduce((bulkOperations, complaint) => [
+      ...bulkOperations,
+      ...operations.upsertViolation(complaint),
+    ], []);
+
 const upsert =
   (searchClient, buildings) =>
     searchClient.bulk(buildBulkUpsertOperations(buildings));
@@ -30,6 +39,10 @@ const upsert =
 const upsertComplaints =
   (searchClient, complaints) =>
     searchClient.bulk(buildBulkUpsertComplaintOperations(complaints));
+
+const upsertViolations =
+  (searchClient, violations) =>
+    searchClient.bulk(buildBulkUpsertViolationOperations(violations));
 
 module.exports = {
   create,

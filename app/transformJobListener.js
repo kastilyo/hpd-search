@@ -9,6 +9,8 @@ const transform =
     switch(source) {
     case NycOpenData.SOURCES.XML:
       return transformer.fromXml(data);
+    case NycOpenData.SOURCES.SODA:
+      return transformer.fromSoda(data);
     }
   };
 

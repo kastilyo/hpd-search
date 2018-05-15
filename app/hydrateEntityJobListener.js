@@ -1,18 +1,15 @@
 /* eslint-disable no-console */
-const { RabbitHole, NycOpenData } = require('./bootstrap');
+const { RabbitHole } = require('./bootstrap');
 
-const Transformer = require('./../src/transformer');
+const Domain = require('./../src/domain');
 
-const transform =
-  (type, source, data) => {
-    const transformer = Transformer.create(type);
-    switch(source) {
-    case NycOpenData.SOURCES.XML:
-      return transformer.fromXml(data);
-    case NycOpenData.SOURCES.SODA:
-      return transformer.fromSoda(data);
-    }
-  };
+const upperFirst =
+  str =>
+    str[0].toUpperCase() + str.slice(1);
+
+const hydrateEntity =
+  (type, source, data) =>
+    Domain[upperFirst(type)][`from${upperFirst(source)}`](data);
 
 RabbitHole.create().then(rabbitHole => Promise.all([
   rabbitHole.createJsonPublisher(process.env.RABBIT_HOLE_EXCHANGE),
@@ -28,10 +25,8 @@ RabbitHole.create().then(rabbitHole => Promise.all([
 
   consumer.consume(({ message, ack }) => {
     const {type, source, data} = message.json;
-
-    publisher.publish(`${type}-${source}.transformed`, {
-      type,
-      data: transform(type, source, data),
+    publisher.publish(`${type}.hydrated`, {
+      data: hydrateEntity(type, source, data),
     }).then(() => ack(message));
   });
 });

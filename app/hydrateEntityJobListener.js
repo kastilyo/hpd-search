@@ -26,6 +26,7 @@ RabbitHole.create().then(rabbitHole => Promise.all([
   consumer.consume(({ message, ack }) => {
     const {type, source, data} = message.json;
     publisher.publish(`${type}.hydrated`, {
+      type,
       data: hydrateEntity(type, source, data),
     }).then(() => ack(message));
   });

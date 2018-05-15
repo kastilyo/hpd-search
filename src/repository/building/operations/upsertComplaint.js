@@ -6,8 +6,7 @@ module.exports =
       { update: { _type: 'building', _id: complaint.buildingId } },
       {
         script: {
-          source: 'if(!ctx._source.complaints.contains(params.complaint)){ctx._source.complaints.add(params.complaint)}',
-          lang: 'painless',
+          id: 'upsert-complaint-to-building',
           params: {
             complaint: R.omit(['buildingId'], complaint),
           }

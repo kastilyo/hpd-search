@@ -26,11 +26,29 @@ const buildBulkUpsertComplaintOperations =
     ], []);
 
 const buildBulkUpsertViolationOperations =
-  complaint =>
-    complaint.reduce((bulkOperations, complaint) => [
+  violation =>
+    violation.reduce((bulkOperations, violation) => [
       ...bulkOperations,
-      ...operations.upsertViolation(complaint),
+      ...operations.upsertViolation(violation),
     ], []);
+
+const groupByBuildingId =
+  items =>
+    items.reduce((groupedItems, item) => ({
+      ...groupedItems,
+      [item.buildingId]: !groupedItems[item.buildingId] ? [item] : [...groupedItems[item.buildingId], item]
+    }), {});
+
+const buildBulkUpsertViolationsOperations =
+  violations => {
+    const violationsByBuildingId = groupByBuildingId(violations);
+
+    return Object.keys(violationsByBuildingId)
+      .reduce((bulkOperations, buildingId) => [
+        ...bulkOperations,
+        ...operations.upsertViolations(buildingId, violationsByBuildingId[buildingId]),
+      ], []);
+  };
 
 const upsert =
   (searchClient, buildings) =>
@@ -42,7 +60,7 @@ const upsertComplaints =
 
 const upsertViolations =
   (searchClient, violations) =>
-    searchClient.bulk(buildBulkUpsertViolationOperations(violations));
+    searchClient.bulk(buildBulkUpsertViolationsOperations(violations));
 
 module.exports = {
   create,

@@ -4,21 +4,21 @@ RabbitHole.create().then(rabbitHole => Promise.all([
   rabbitHole.createJsonPublisher(process.env.RABBIT_HOLE_EXCHANGE),
   rabbitHole,
 ])).then(([publisher, rabbitHole]) => {
-  const routingKeys = [
+  const payloads = [
     ['xml', NycOpenData.TYPES.XML],
     ['soda', NycOpenData.TYPES.SODA],
   ].reduce(
-    (routingKeys, [source, TYPES]) =>
+    (jobPayloads, [source, types]) =>
       [
-        ...routingKeys,
-        ...Object.values(TYPES).map(type => `parse.${type}-${source}`)
+        ...jobPayloads,
+        ...Object.values(types).map(type => ({type, source})),
       ]
     ,
     []
   );
 
   return Promise.all(
-    routingKeys.map(routingKey => publisher.publish(routingKey, {}))
+    payloads.map(payload => publisher.publish('parse.data', payload))
   ).then(() => rabbitHole.close());
 });
 

@@ -16,8 +16,7 @@ RabbitHole.create().then(rabbitHole => Promise.all([
   const nycOpenData = NycOpenData.create();
 
   consumer.consume(({ message, ack, nack }) => {
-    const [, typeSource] = message.fields.routingKey.split('.');
-    const [type, source] = typeSource.split('-');
+    const {source, type, filter} = message.json;
 
     if (!nycOpenData.isSupportedSource(source)) {
       console.log(`Unrecognized source, '${source}', provided`);
@@ -31,15 +30,14 @@ RabbitHole.create().then(rabbitHole => Promise.all([
 
     console.log(`Received message: ${JSON.stringify(message)}`);
 
-    const filterOptions = message.json;
-    const dataStream = nycOpenData.getStream(source, type, filterOptions);
+    const dataStream = nycOpenData.getStream(source, type, filter);
+
+    dataStream.onValue(data => publisher.publish('data.parsed', data));
 
     dataStream.onEnd(() => {
       console.log('Finished parsing. Acking...');
       ack(message);
     });
-
-    dataStream.onValue(data => publisher.publish(`${type}-${source}.parsed`, data));
   });
 });
 

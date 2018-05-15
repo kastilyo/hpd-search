@@ -1,6 +1,7 @@
 const elasticsearch = require('elasticsearch');
 const { DateTime } = require('luxon');
 const mappings = require('./mappings');
+const putScripts = require('./putScripts');
 
 const BASE_NAME = 'hpd';
 
@@ -50,6 +51,7 @@ const create =
         createIndexAndSetAlias(client, dateTime),
       createIndex: (dateTime = DateTime.utc()) =>
         createIndex(client, dateTime),
+      putScripts: () => putScripts(client),
       bulk: body =>
         client.bulk({
           index: BASE_NAME,

@@ -11,7 +11,11 @@ RabbitHole.create().then(rabbitHole => Promise.all([
     (jobPayloads, [source, types]) =>
       [
         ...jobPayloads,
-        ...Object.values(types).map(type => ({type, source})),
+        ...Object.values(types).map(type => ({
+          type,
+          source,
+          filter: {}
+        })),
       ]
     ,
     []

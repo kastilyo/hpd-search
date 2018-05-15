@@ -8,9 +8,9 @@ RabbitHole.create().then(rabbitHole => Promise.all([
     ['xml', NycOpenData.TYPES.XML],
     ['soda', NycOpenData.TYPES.SODA],
   ].reduce(
-    (jobPayloads, [source, types]) =>
+    (payloads, [source, types]) =>
       [
-        ...jobPayloads,
+        ...payloads,
         ...Object.values(types).map(type => ({
           type,
           source,

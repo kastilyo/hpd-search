@@ -11,6 +11,24 @@ const hydrateEntity =
   (type, source, data) =>
     Domain[upperFirst(type)][`from${upperFirst(source)}`](data);
 
+const getRoutingKeys =
+  type => {
+    switch (type) {
+    case 'building':
+      return [
+        'index.building',
+      ];
+    case 'violation':
+      return [
+        'index.building-violation',
+      ];
+    case 'complaint':
+      return [
+        'index.building-complaint',
+      ];
+    }
+  };
+
 RabbitHole.create().then(rabbitHole => Promise.all([
   rabbitHole.createJsonPublisher(process.env.RABBIT_HOLE_EXCHANGE),
   rabbitHole.createJsonConsumer(process.env.RABBIT_HOLE_TRANSFORM_QUEUE),
@@ -25,9 +43,11 @@ RabbitHole.create().then(rabbitHole => Promise.all([
 
   consumer.consume(({ message, ack }) => {
     const {type, source, data} = message.json;
-    publisher.publish(`${type}.hydrated`, {
+    const entity = hydrateEntity(type, source, data);
+    const routingKeys = getRoutingKeys(type);
+    Promise.all(routingKeys.map(routingKey => publisher.publish(routingKey, {
       type,
-      data: hydrateEntity(type, source, data),
-    }).then(() => ack(message));
+      data: entity,
+    }))).then(() => ack(message));
   });
 });

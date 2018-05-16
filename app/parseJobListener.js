@@ -32,7 +32,7 @@ RabbitHole.create().then(rabbitHole => Promise.all([
 
     const dataStream = nycOpenData.getStream(source, type, filter);
 
-    dataStream.onValue(data => publisher.publish('data.parsed', data));
+    dataStream.onValue(data => publisher.publish('hydrate.entity', data));
 
     dataStream.onEnd(() => {
       console.log('Finished parsing. Acking...');

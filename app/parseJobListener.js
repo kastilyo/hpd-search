@@ -16,7 +16,7 @@ RabbitHole.create().then(rabbitHole => Promise.all([
   const nycOpenData = NycOpenData.create();
 
   consumer.consume(({ message, ack, nack }) => {
-    const {source, type, filter} = message.json;
+    const { source, type, filter } = message.json;
 
     if (!nycOpenData.isSupportedSource(source)) {
       console.log(`Unrecognized source, '${source}', provided`);

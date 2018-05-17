@@ -22,8 +22,7 @@ module.exports =
   client =>
     Promise.all(
       [
-        'upsert-complaint-to-building',
-        'upsert-violation-to-building',
+        'upsert-complaints-to-building',
         'upsert-violations-to-building',
       ].map(readFileAndPut(client))
     );

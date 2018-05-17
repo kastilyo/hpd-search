@@ -22,7 +22,7 @@ const resolveQueue =
 
 const resolveBulkOperationBuilder =
   type => {
-    switch(type) {
+    switch (type) {
     case TYPES.VIOLATION:
       return Building.upsertViolations;
     case TYPES.COMPLAINT:

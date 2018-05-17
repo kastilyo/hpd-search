@@ -31,7 +31,7 @@ const getRoutingKeys =
 
 RabbitHole.create().then(rabbitHole => Promise.all([
   rabbitHole.createJsonPublisher(process.env.RABBIT_HOLE_EXCHANGE),
-  rabbitHole.createJsonConsumer(process.env.RABBIT_HOLE_TRANSFORM_QUEUE),
+  rabbitHole.createJsonConsumer(process.env.RABBIT_HOLE_HYDRATE_ENTITY_QUEUE),
   rabbitHole,
 ])).then(([publisher, consumer, rabbitHole]) => {
   console.log('Listening...');

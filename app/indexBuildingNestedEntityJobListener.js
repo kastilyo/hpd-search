@@ -51,7 +51,7 @@ const create =
     const bulkOperationBuilder = resolveBulkOperationBuilder(type);
     RabbitHole.create().then(rabbitHole => Promise.all([
       rabbitHole.createJsonPublisher(process.env.RABBIT_HOLE_EXCHANGE),
-      rabbitHole.createJsonConsumer(resolveQueue(type)),
+      rabbitHole.createJsonConsumer(resolveQueue(type), {prefetch: size}),
       rabbitHole,
     ])).then(([publisher, consumer, rabbitHole]) => {
       console.log('Listening...');

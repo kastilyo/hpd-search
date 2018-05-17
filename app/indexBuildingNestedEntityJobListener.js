@@ -66,11 +66,12 @@ const create =
         .bufferWithTimeOrCount(timeoutMs, size);
 
       messageStream.onValue(messages => {
-        const entitiesByBuildingId = groupEntitiesByBuildingId(messages);
-
         const bulkOperations = Object
-          .keys(entitiesByBuildingId)
-          .map(buildingId => bulkOperationBuilder(buildingId, entitiesByBuildingId[buildingId]));
+          .entries(groupEntitiesByBuildingId(messages))
+          .map(
+            ([buildingId, entities]) =>
+              bulkOperationBuilder(buildingId, entities)
+          );
 
         Promise.all(bulkOperations.map(bulkOperation => publisher.publish('index', {
           operation: bulkOperation,

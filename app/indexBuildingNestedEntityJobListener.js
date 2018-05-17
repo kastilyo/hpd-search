@@ -63,6 +63,7 @@ const create =
 
       const messageStream = Bacon
         .fromBinder(sink => consumer.consume(({ message }) => sink(message)))
+        .doAction(({json: {type, data}}) => console.log(`Building bulk operation for ${type} ID ${data.id}`))
         .bufferWithTimeOrCount(timeoutMs, size);
 
       messageStream.onValue(messages => {
@@ -75,7 +76,9 @@ const create =
 
         Promise.all(bulkOperations.map(bulkOperation => publisher.publish('index', {
           operation: bulkOperation,
-        }))).then(() => Promise.all(messages.map(consumer.ack)));
+        })))
+          .then(() => console.log('Acking messages...'))
+          .then(() => Promise.all(messages.map(consumer.ack)));
       });
     });
   };

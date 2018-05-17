@@ -28,14 +28,14 @@ RabbitHole.create().then(rabbitHole => Promise.all([
       return nack(message, false, false);
     }
 
-    console.log(`Received message: ${JSON.stringify(message)}`);
+    console.log(`Received message ${JSON.stringify(message.json)}`);
 
     const dataStream = nycOpenData.getStream(source, type, filter);
 
     dataStream.onValue(data => publisher.publish('hydrate.entity', data));
 
     dataStream.onEnd(() => {
-      console.log('Finished parsing. Acking...');
+      console.log('Acking...');
       ack(message);
     });
   });

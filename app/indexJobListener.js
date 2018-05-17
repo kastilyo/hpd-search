@@ -23,6 +23,7 @@ RabbitHole.create().then(rabbitHole => Promise.all([
   const searchClient = SearchClient.create();
 
   const messageStream = Bacon.fromBinder(sink => consumer.consume(({ message }) => sink(message)))
+    .doAction(({json: {operation: [action]}}) => console.log(`Will perform bulk ${JSON.stringify(action)}`))
     .bufferWithTimeOrCount(BUFFER_TIMEOUT_MS, BATCH_SIZE);
 
   messageStream.onValue(messages => {
@@ -36,12 +37,8 @@ RabbitHole.create().then(rabbitHole => Promise.all([
     );
 
     searchClient.bulk(operations)
-      .then(
-        result =>
-          Promise.all([
-            ...messages.map(consumer.ack),
-            publisher.publish('index-result', result),
-          ])
-      );
+      .then(result => publisher.publish('index-result', result))
+      .then(() => console.log('Performed bulk operation. Acking...'))
+      .then(() => Promise.all(messages.map(consumer.ack)));
   });
 });

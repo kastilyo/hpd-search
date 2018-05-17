@@ -44,10 +44,12 @@ RabbitHole.create().then(rabbitHole => Promise.all([
   consumer.consume(({ message, ack }) => {
     const {type, source, data} = message.json;
     const entity = hydrateEntity(type, source, data);
-    const routingKeys = getRoutingKeys(type);
-    Promise.all(routingKeys.map(routingKey => publisher.publish(routingKey, {
+    console.log(`Hydrated ${type} ID ${entity.id} from ${source.toUpperCase()} data`);
+    Promise.all(getRoutingKeys(type).map(routingKey => publisher.publish(routingKey, {
       type,
       data: entity,
-    }))).then(() => ack(message));
+    })))
+      .then(() => console.log('Acking...'))
+      .then(() => ack(message));
   });
 });

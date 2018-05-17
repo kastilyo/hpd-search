@@ -15,9 +15,13 @@ RabbitHole.create().then(rabbitHole => Promise.all([
     rabbitHole.close();
   });
 
-  consumer.consume(({ message, ack }) => publisher.publish('index', {
-    operation: BulkOperation.Building.upsert(message.json.data)
-  }).then(() => ack(message)));
+  consumer.consume(({ message, ack }) => {
+    const building = message.json.data;
+    console.log(`Received message for building ID ${building.id}`);
+    publisher.publish('index', {
+      operation: BulkOperation.Building.upsert(building)
+    }).then(() => ack(message));
+  });
 });
 
 

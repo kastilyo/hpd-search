@@ -1,6 +1,5 @@
-const create =
-  (type) => require(`./${type}`);
-
 module.exports = {
-  create,
+  Building: require('./building'),
+  Complaint: require('./complaint'),
+  Violation: require('./violation'),
 };

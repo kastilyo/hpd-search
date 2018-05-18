@@ -4,7 +4,12 @@
   "description": "Elasticsearch indexing of HPD data",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start config/pm2-apps.json",
+    "stop": "pm2 stop config/pm2-apps.json",
+    "restart": "pm2 restart config/pm2-apps.json",
+    "emit-parse-jobs": "node app/script/parseJobEmitter",
+    "pm2": "pm2"
   },
   "author": "Mark Castillo",
   "license": "MIT",

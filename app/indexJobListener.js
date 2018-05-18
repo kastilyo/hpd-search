@@ -6,7 +6,7 @@ const { RabbitHole } = require('./bootstrap');
 
 const SearchClient = require('./../src/searchClient');
 
-const BATCH_SIZE = 20000;
+const BATCH_SIZE = 1000;
 const BUFFER_TIMEOUT_MS = 10000;
 
 RabbitHole.create().then(rabbitHole => Promise.all([

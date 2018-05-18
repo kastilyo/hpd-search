@@ -1,0 +1,34 @@
+{
+  "apps": [
+    {
+      "name": "parse-job-listener",
+      "script": "./app/parseJobListener.js",
+      "exec_mode": "cluster",
+      "instances": 3
+    },
+    {
+      "name": "hydrate-entity-listener",
+      "script": "./app/hydrateEntityJobListener.js",
+      "exec_mode": "cluster",
+      "instances": 3
+    },
+    {
+      "name": "index-building-job-listener",
+      "script": "./app/indexBuildingJobListener.js"
+    },
+    {
+      "name": "index-building-violation-job-listener",
+      "script": "./app/indexBuildingViolationJobListener.js",
+      "exec_mode": "cluster",
+      "instances": 1
+    },
+    {
+      "name": "index-building-complaint-job-listener",
+      "script": "./app/indexBuildingComplaintJobListener.js"
+    },
+    {
+      "name": "index-job-listener",
+      "script": "./app/indexJobListener.js"
+    }
+  ]
+}

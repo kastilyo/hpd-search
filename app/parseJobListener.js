@@ -2,7 +2,7 @@
 const { RabbitHole, NycOpenData } = require('./bootstrap');
 
 RabbitHole.create().then(rabbitHole => Promise.all([
-  rabbitHole.createJsonPublisher(process.env.RABBIT_HOLE_EXCHANGE),
+  rabbitHole.createJsonPublisher(process.env.RABBIT_HOLE_EXCHANGE, { JSON: require('circular-json')}),
   rabbitHole.createJsonConsumer(process.env.RABBIT_HOLE_PARSE_QUEUE),
   rabbitHole,
 ])).then(([publisher, consumer, rabbitHole]) => {

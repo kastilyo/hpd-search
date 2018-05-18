@@ -37,7 +37,12 @@ RabbitHole.create().then(rabbitHole => Promise.all([
     );
 
     searchClient.bulk(operations)
-      .then(result => publisher.publish('index-result', result))
+      .then(result => {
+        const operationResults = R.zip(R.splitEvery(2, operations), result.items);
+        return Promise.all(operationResults.map(([[action, payload], result]) => {
+          return publisher.publish('index-result', { action, payload, result });
+        }));
+      })
       .then(() => console.log('Performed bulk operation. Acking...'))
       .then(() => Promise.all(messages.map(consumer.ack)));
   });

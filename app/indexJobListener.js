@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-const Bacon = require('baconjs');
+const Bacon = require('baconjs')
+  , R = require('ramda');
 
 const { RabbitHole } = require('./bootstrap');
 
@@ -37,12 +38,11 @@ RabbitHole.create().then(rabbitHole => Promise.all([
     );
 
     searchClient.bulk(operations)
-      .then(result => {
-        const operationResults = R.zip(R.splitEvery(2, operations), result.items);
-        return Promise.all(operationResults.map(([[action, payload], result]) => {
-          return publisher.publish('index-result', { action, payload, result });
-        }));
-      })
+      .then(result => Promise.all([
+        publisher.publish('bulk-index-result', R.omit(['items'], result)),
+        ...R.zip(R.splitEvery(2, operations), result.items)
+          .map(([[action, payload], result]) => publisher.publish('index-result', { action, payload, result }))
+      ]))
       .then(() => console.log('Performed bulk operation. Acking...'))
       .then(() => Promise.all(messages.map(consumer.ack)));
   });

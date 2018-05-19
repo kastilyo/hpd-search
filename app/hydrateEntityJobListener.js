@@ -26,6 +26,10 @@ const getRoutingKeys =
       return [
         'index.building-complaint',
       ];
+    case 'registration':
+      return [
+        'index.building-registration',
+      ];
     }
   };
 

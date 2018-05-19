@@ -27,6 +27,10 @@
       "script": "./app/indexBuildingComplaintJobListener.js"
     },
     {
+      "name": "index-building-registration-job-listener",
+      "script": "./app/indexBuildingRegistrationJobListener.js"
+    },
+    {
       "name": "index-job-listener",
       "script": "./app/indexJobListener.js"
     }

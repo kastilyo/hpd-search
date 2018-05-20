@@ -17,6 +17,7 @@ const getRoutingKeys =
     case 'building':
       return [
         'hydrate.bulk-upsert.building',
+        'geocode.building',
       ];
     case 'violation':
       return [

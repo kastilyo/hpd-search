@@ -44,7 +44,10 @@ RabbitHole.create().then(rabbitHole => Promise.all([
     console.log(`Received building ID ${building.id} to geocode`);
 
     getGeosupportData(building)
-      .then(data => publisher.publish('hydrate.bulk-upsert.building-geosupport-data', data))
+      .then(data => publisher.publish('hydrate.bulk-upsert.building-geosupport-data', {
+        type: 'geosupport-data',
+        data
+      }))
       .then(() => console.log(`Geocoded building ID ${building.id}. Acking...`))
       .then(() => ack(message));
   });

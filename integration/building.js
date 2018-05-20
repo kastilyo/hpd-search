@@ -10,10 +10,8 @@ const BulkOperation = require('./../src/bulkOperation')
 NycOpenData
   .create()
   .getStream('xml', 'building')
-  .onValue(R.pipe(
-    R.tap(xml => console.log(JSON.stringify(xml))),
-    ({ data }) => Domain.Building.fromXml(data),
-    R.tap(building => console.log(JSON.stringify(building))),
-    BulkOperation.Building.upsert,
-    R.tap(building => console.log(JSON.stringify(building))),
-  ));
+  .doAction(xml => console.log(JSON.stringify(xml)))
+  .map(({ data }) => Domain.Building.fromXml(data))
+  .doAction(building => console.log(JSON.stringify(building)))
+  .map(BulkOperation.Building.upsert)
+  .onValue(building => console.log(JSON.stringify(building)));

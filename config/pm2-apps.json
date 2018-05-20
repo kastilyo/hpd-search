@@ -19,6 +19,10 @@
       "instances": 3
     },
     {
+      "name": "geocode-building-listener",
+      "script": "./app/listener/geocodeBuilding.js"
+    },
+    {
       "name": "bulk-listener",
       "script": "./app/listener/bulk.js"
     }

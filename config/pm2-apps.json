@@ -14,25 +14,9 @@
     },
     {
       "name": "index-building-job-listener",
-      "script": "./app/indexBuildingJobListener.js"
-    },
-    {
-      "name": "index-building-violation-job-listener",
-      "script": "./app/indexBuildingViolationJobListener.js",
+      "script": "./app/indexBuildingJobListener.js",
       "exec_mode": "cluster",
-      "instances": 1
-    },
-    {
-      "name": "index-building-complaint-job-listener",
-      "script": "./app/indexBuildingComplaintJobListener.js"
-    },
-    {
-      "name": "index-building-registration-job-listener",
-      "script": "./app/indexBuildingRegistrationJobListener.js"
-    },
-    {
-      "name": "index-building-litigation-job-listener",
-      "script": "./app/indexBuildingLitigationJobListener.js"
+      "instances": 3
     },
     {
       "name": "index-job-listener",

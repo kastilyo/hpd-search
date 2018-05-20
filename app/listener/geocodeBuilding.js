@@ -16,9 +16,11 @@ const getGeosupportData =
       block: building.block,
       lot: building.lot,
     }),
-    geoclient.bin({
-      bin: building.bin,
-    }),
+    building.bin
+      ? geoclient.bin({
+        bin: building.bin,
+      })
+      : {},
   ]).then(([address, bbl, bin]) => ({
     buildingId: building.id,
     address,

@@ -62,5 +62,11 @@ module.exports = {
   litigations: {
     type: 'nested',
     properties: require('./../litigation/properties'),
+  },
+  location: {
+    type: 'geo_point',
+  },
+  locationInternal: {
+    type: 'geo_point',
   }
 };

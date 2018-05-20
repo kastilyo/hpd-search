@@ -2,25 +2,25 @@
   "apps": [
     {
       "name": "parse-job-listener",
-      "script": "./app/parseJobListener.js",
+      "script": "./app/listener/parse.js",
       "exec_mode": "cluster",
       "instances": 3
     },
     {
       "name": "hydrate-entity-listener",
-      "script": "./app/hydrateEntityJobListener.js",
+      "script": "./app/listener/hydrateEntity.js",
       "exec_mode": "cluster",
       "instances": 3
     },
     {
       "name": "index-building-job-listener",
-      "script": "./app/indexBuildingJobListener.js",
+      "script": "./app/listener/indexBuilding/index.js",
       "exec_mode": "cluster",
       "instances": 3
     },
     {
       "name": "index-job-listener",
-      "script": "./app/indexJobListener.js"
+      "script": "./app/listener/index.js"
     }
   ]
 }

@@ -23,7 +23,7 @@ module.exports =
       .then(consumer => {
         const messageStream = Bacon
           .fromBinder(sink => consumer.consume(({ message }) => sink(message)))
-          .doAction(({ json: { type, data } }) => console.log(`Building bulk operation for ${type} ID ${data.id} belonging to building id ${data.buildingId}`))
+          .doAction(({ json: { type, data } }) => console.log(`Building bulk operation for ${type} ID ${data.id} belonging to building ID ${data.buildingId}`))
           .bufferWithTimeOrCount(timeoutMs, size);
 
         const bulkOperationBuilder = resolveBulkOperationBuilder(type);

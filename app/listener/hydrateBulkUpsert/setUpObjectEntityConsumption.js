@@ -15,7 +15,7 @@ module.exports =
             const { type, data } = message.json;
             const buildingId = resolveBuildingId(type, data);
             const bulkUpsertHydrator = resolveBulkUpsertHydrator(type);
-            const typeDescriptorFragment = type === TYPES.BUILDING ? ' ' : ` ${type} ID ${data.id} belonging to `;
+            const typeDescriptorFragment = type === TYPES.BUILDING ? ' ' : ` ${type} ID ${data.id || buildingId} belonging to `;
             console.log(`Received message for${typeDescriptorFragment}building ID ${buildingId}`);
             publisher.publish('bulk', {
               operation: bulkUpsertHydrator(data)

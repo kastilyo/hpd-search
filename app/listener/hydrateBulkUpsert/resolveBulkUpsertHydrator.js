@@ -15,5 +15,7 @@ module.exports =
       return Building.upsertComplaints;
     case TYPES.LITIGATION:
       return Building.upsertLitigations;
+    case TYPES.GEOSUPPORT_DATA:
+      return Building.upsertGeosupportData;
     }
   };

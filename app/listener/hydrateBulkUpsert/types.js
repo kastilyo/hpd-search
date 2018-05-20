@@ -4,4 +4,5 @@ module.exports = {
   LITIGATION: 'litigation',
   BUILDING: 'building',
   REGISTRATION: 'registration',
+  GEOSUPPORT_DATA: 'geosupport-data',
 };

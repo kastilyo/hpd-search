@@ -18,6 +18,7 @@ RabbitHole.create().then(rabbitHole => Promise.all([
 
   setUpObjectEntityConsumption(rabbitHole, publisher, 'building');
   setUpObjectEntityConsumption(rabbitHole, publisher, 'registration');
+  setUpObjectEntityConsumption(rabbitHole, publisher, 'geosupport-data');
   setUpNestedEntityConsumption(rabbitHole, publisher, 'complaint', {
     size: 20000,
     timeoutMs: 10000,

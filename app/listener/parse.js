@@ -30,7 +30,8 @@ RabbitHole.create().then(rabbitHole => Promise.all([
 
     console.log(`Received message ${JSON.stringify(message.json)}`);
 
-    const dataStream = nycOpenData.getStream(source, type, filter);
+    const dataStream = nycOpenData.getStream(source, type, filter)
+      .doAction(() => `Parsed ${type} from ${source.toUpperCase()}`);
 
     dataStream.onValue(data => publisher.publish('hydrate.entity', data));
 

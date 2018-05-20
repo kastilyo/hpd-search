@@ -5,7 +5,7 @@ module.exports =
     switch (type) {
     case TYPES.BUILDING:
       return data.id;
-    case TYPES.REGISTRATION:
+    default:
       return data.buildingId;
     }
   };

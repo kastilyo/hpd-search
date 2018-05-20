@@ -37,11 +37,15 @@ RabbitHole.create().then(rabbitHole => Promise.all([
       []
     );
 
+    const publishIndexResults =
+      (publisher, operations, results) =>
+        R.zip(R.splitEvery(2, operations), results.items)
+          .map(([[action, payload], result]) => publisher.publish('index-result', { action, payload, result }));
+
     searchClient.bulk(operations)
-      .then(result => Promise.all([
-        publisher.publish('bulk-index-result', R.omit(['items'], result)),
-        ...R.zip(R.splitEvery(2, operations), result.items)
-          .map(([[action, payload], result]) => publisher.publish('index-result', { action, payload, result }))
+      .then(results => Promise.all([
+        publisher.publish('bulk-index-result', R.omit(['items'], results)),
+        ...(results.errors ? publishIndexResults(publisher, operations, results) : []),
       ]))
       .then(() => console.log('Performed bulk operation. Acking...'))
       .then(() => Promise.all(messages.map(consumer.ack)));

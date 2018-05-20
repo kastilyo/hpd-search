@@ -20,7 +20,9 @@
     },
     {
       "name": "geocode-building-listener",
-      "script": "./app/listener/geocodeBuilding.js"
+      "script": "./app/listener/geocodeBuilding.js",
+      "exec_mode": "cluster",
+      "instances": 3
     },
     {
       "name": "bulk-listener",

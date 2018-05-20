@@ -58,5 +58,9 @@ module.exports = {
   registration: {
     type: 'object',
     properties: require('./../registration/properties'),
+  },
+  litigations: {
+    type: 'nested',
+    properties: require('./../litigation/properties'),
   }
 };

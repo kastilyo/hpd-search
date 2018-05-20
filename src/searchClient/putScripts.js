@@ -24,6 +24,7 @@ module.exports =
       [
         'upsert-complaints-to-building',
         'upsert-violations-to-building',
+        'upsert-litigations-to-building',
       ].map(readFileAndPut(client))
     );
 

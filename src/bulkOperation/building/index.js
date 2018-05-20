@@ -4,4 +4,5 @@ module.exports = {
   upsertViolations: require('./upsertViolations'),
   upsertRegistration: require('./upsertRegistration'),
   upsertLitigations: require('./upsertLitigations'),
+  upsertGeosupportData: require('./upsertGeosupportData'),
 };

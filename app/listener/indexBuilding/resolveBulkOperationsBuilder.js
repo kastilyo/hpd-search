@@ -1,4 +1,4 @@
-const { Building } = require('./../../src/bulkOperation');
+const { Building } = require('./../../../src/bulkOperation');
 
 const TYPES = require('./types');
 

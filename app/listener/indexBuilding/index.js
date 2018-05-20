@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-const { RabbitHole } = require('./../bootstrap');
+const { RabbitHole } = require('./../../bootstrap');
 
 const setUpObjectEntityConsumption = require('./setUpObjectEntityConsumption')
   , setUpNestedEntityConsumption = require('./setUpNestedEntityConsumption');

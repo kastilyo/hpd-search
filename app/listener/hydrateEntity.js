@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-const { RabbitHole } = require('./bootstrap');
+const { RabbitHole } = require('./../bootstrap');
 
-const Domain = require('./../src/domain');
+const Domain = require('./../../src/domain');
 
 const upperFirst =
   str =>

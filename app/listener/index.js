@@ -2,9 +2,9 @@
 const Bacon = require('baconjs')
   , R = require('ramda');
 
-const { RabbitHole } = require('./bootstrap');
+const { RabbitHole } = require('./../bootstrap');
 
-const SearchClient = require('./../src/searchClient');
+const SearchClient = require('./../../src/searchClient');
 
 const BATCH_SIZE = 1000;
 const BUFFER_TIMEOUT_MS = 10000;

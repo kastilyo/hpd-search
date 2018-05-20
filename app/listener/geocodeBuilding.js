@@ -20,6 +20,7 @@ const getGeosupportData =
       bin: building.bin,
     }),
   ]).then(([address, bbl, bin]) => ({
+    buildingId: building.id,
     address,
     bbl,
     bin,

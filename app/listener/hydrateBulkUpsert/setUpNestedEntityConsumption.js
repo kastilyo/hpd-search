@@ -2,7 +2,7 @@
 const Bacon = require('baconjs');
 
 const resolveQueue = require('./resolveQueue')
-  , resolveBulkOperationBuilder = require('./resolveBulkOperationsBuilder');
+  , resolveBulkUpsertHydrator = require('./resolveBulkUpsertHydrator');
 
 const groupEntitiesByBuildingId =
   messages =>
@@ -26,16 +26,16 @@ module.exports =
           .doAction(({ json: { type, data } }) => console.log(`Building bulk operation for ${type} ID ${data.id} belonging to building ID ${data.buildingId}`))
           .bufferWithTimeOrCount(timeoutMs, size);
 
-        const bulkOperationBuilder = resolveBulkOperationBuilder(type);
+        const bulkUpsertHydrator = resolveBulkUpsertHydrator(type);
         messageStream.onValue(messages => {
           const bulkOperations = Object
             .entries(groupEntitiesByBuildingId(messages))
             .map(
               ([buildingId, entities]) =>
-                bulkOperationBuilder(buildingId, entities)
+                bulkUpsertHydrator(buildingId, entities)
             );
 
-          Promise.all(bulkOperations.map(bulkOperation => publisher.publish('index', {
+          Promise.all(bulkOperations.map(bulkOperation => publisher.publish('bulk', {
             operation: bulkOperation,
           })))
             .then(() => console.log('Acking messages...'))

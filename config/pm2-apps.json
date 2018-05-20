@@ -13,8 +13,8 @@
       "instances": 3
     },
     {
-      "name": "index-building-listener",
-      "script": "./app/listener/indexBuilding/index.js",
+      "name": "hydrate-bulk-upsert-listener",
+      "script": "./app/listener/hydrateBulkUpsert/index.js",
       "exec_mode": "cluster",
       "instances": 3
     },

@@ -16,23 +16,23 @@ const getRoutingKeys =
     switch (type) {
     case 'building':
       return [
-        'index.building',
+        'hydrate.bulk-upsert.building',
       ];
     case 'violation':
       return [
-        'index.building-violation',
+        'hydrate.bulk-upsert.building-violation',
       ];
     case 'complaint':
       return [
-        'index.building-complaint',
+        'hydrate.bulk-upsert.building-complaint',
       ];
     case 'registration':
       return [
-        'index.building-registration',
+        'hydrate.bulk-upsert.building-registration',
       ];
     case 'litigation':
       return [
-        'index.building-litigation',
+        'hydrate.bulk-upsert.building-litigation',
       ];
     }
   };

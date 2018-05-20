@@ -1,3 +1,5 @@
+const { DateTime } = require('luxon');
+
 const problemFromXml =
   problemData => ({
     id: problemData.children.ProblemID.value,
@@ -8,7 +10,7 @@ const problemFromXml =
     minorCategory: problemData.children.MinorCategory.children.LongName.value,
     code: problemData.children.Code.children.LongName.value,
     status: problemData.children.Status.children.LongName.value,
-    statusUpdatedAt: problemData.children.StatusDate.value,
+    statusUpdatedAt: formatDate(problemData.children.StatusDate.value),
     statusDescription: problemData.children.StatusDescription.value
       ? problemData.children.StatusDescription.value.trim()
       : null,
@@ -19,13 +21,17 @@ const fromXml =
     ({
       id: data.children.ComplaintID.value,
       buildingId: data.children.BuildingID.value,
-      receivedAt: data.children.ReceivedDate.value,
+      receivedAt: formatDate(data.children.ReceivedDate.value),
       status: data.children.Status.children.LongName.value,
-      statusUpdatedAt: data.children.StatusDate.value,
+      statusUpdatedAt: formatDate(data.children.StatusDate.value),
       problems: data.children.Problems.children.Problem.map
         ? data.children.Problems.children.Problem.map(problemFromXml)
         : [problemFromXml(data.children.Problems.children.Problem)],
     });
+
+const formatDate =
+  inputDate =>
+    DateTime.fromISO(inputDate).toISO();
 
 module.exports = {
   fromXml,

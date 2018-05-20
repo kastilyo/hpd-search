@@ -1,3 +1,5 @@
+const { DateTime } = require('luxon');
+
 const contactFromXml =
   contactData => ({
     id: contactData.children.RegistrationContactID.value,
@@ -22,14 +24,18 @@ const fromXml =
     ({
       id: data.children.RegistrationID.value,
       buildingId: data.children.BuildingID.value,
-      lastRegistrationAt: data.children.LastRegistrationDate.value,
-      expiresAt: data.children.RegistrationEndDate.value,
+      lastRegistrationAt: formatDate(data.children.LastRegistrationDate.value),
+      expiresAt: formatDate(data.children.RegistrationEndDate.value),
       contacts: data.children.Contacts.children
         ? data.children.Contacts.children.RegistrationContact.map
           ? data.children.Contacts.children.RegistrationContact.map(contactFromXml)
           : [contactFromXml(data.children.Contacts.children.RegistrationContact)]
         : [],
     });
+
+const formatDate =
+  inputDate =>
+    DateTime.fromISO(inputDate).toISO();
 
 module.exports = {
   fromXml,

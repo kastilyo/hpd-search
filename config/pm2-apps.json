@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "parse-job-listener",
+      "name": "parse-listener",
       "script": "./app/listener/parse.js",
       "exec_mode": "cluster",
       "instances": 3
@@ -13,13 +13,13 @@
       "instances": 3
     },
     {
-      "name": "index-building-job-listener",
+      "name": "index-building-listener",
       "script": "./app/listener/indexBuilding/index.js",
       "exec_mode": "cluster",
       "instances": 3
     },
     {
-      "name": "index-job-listener",
+      "name": "index-listener",
       "script": "./app/listener/index.js"
     }
   ]

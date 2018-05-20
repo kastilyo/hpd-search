@@ -8,7 +8,7 @@ const fromSoda =
       status: data.currentstatus,
       statusUpdatedAt: data.currentstatusdate,
       apartment: data.apartment || null,
-      story: data.story,
+      story: data.story || null,
       class: data.class,
       inspectedAt: data.inspectiondate ? formatDate(data.inspectiondate) : null,
       approvedAt: data.approveddate ? formatDate(data.approveddate) : null,

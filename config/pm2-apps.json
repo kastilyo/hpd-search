@@ -19,8 +19,8 @@
       "instances": 3
     },
     {
-      "name": "index-listener",
-      "script": "./app/listener/index.js"
+      "name": "bulk-listener",
+      "script": "./app/listener/bulk.js"
     }
   ]
 }

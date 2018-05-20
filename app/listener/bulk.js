@@ -11,7 +11,7 @@ const BUFFER_TIMEOUT_MS = 30000;
 
 RabbitHole.create().then(rabbitHole => Promise.all([
   rabbitHole.createJsonPublisher(process.env.RABBIT_HOLE_EXCHANGE),
-  rabbitHole.createJsonConsumer(process.env.RABBIT_HOLE_INDEX_QUEUE, { prefetch: BATCH_SIZE }),
+  rabbitHole.createJsonConsumer(process.env.RABBIT_HOLE_BULK_QUEUE, { prefetch: BATCH_SIZE }),
   rabbitHole,
 ])).then(([publisher, consumer, rabbitHole]) => {
   console.log('Listening...');
@@ -50,11 +50,11 @@ RabbitHole.create().then(rabbitHole => Promise.all([
           ).filter(({action, result}) => {
             const [type] = Object.keys(action);
             return result[type].error;
-          }).map(message => publisher.publish('index-result', message));
+          }).map(message => publisher.publish('bulk-operation-error', message));
 
     searchClient.bulk(operations)
       .then(results => Promise.all([
-        publisher.publish('bulk-index-result', R.omit(['items'], results)),
+        publisher.publish('bulk-operation-result', R.omit(['items'], results)),
         ...(results.errors ? publishIndexResults(publisher, operations, results) : []),
       ]))
       .then(() => console.log('Performed bulk operation. Acking...'))

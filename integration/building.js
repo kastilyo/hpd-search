@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
-const R = require('ramda')
-  , JSON = require('circular-json');
+const JSON = require('circular-json');
 
 const { NycOpenData } = require('./../app/bootstrap');
 

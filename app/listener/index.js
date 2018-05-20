@@ -11,7 +11,7 @@ const BUFFER_TIMEOUT_MS = 15000;
 
 RabbitHole.create().then(rabbitHole => Promise.all([
   rabbitHole.createJsonPublisher(process.env.RABBIT_HOLE_EXCHANGE),
-  rabbitHole.createJsonConsumer(process.env.RABBIT_HOLE_INDEX_QUEUE, {prefetch: BATCH_SIZE}),
+  rabbitHole.createJsonConsumer(process.env.RABBIT_HOLE_INDEX_QUEUE, { prefetch: BATCH_SIZE }),
   rabbitHole,
 ])).then(([publisher, consumer, rabbitHole]) => {
   console.log('Listening...');

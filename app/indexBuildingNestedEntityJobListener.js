@@ -8,6 +8,7 @@ const { Building } = require('./../src/bulkOperation');
 const TYPES = {
   VIOLATION: 'violation',
   COMPLAINT: 'complaint',
+  LITIGATION: 'litigation',
 };
 
 const resolveQueue =
@@ -17,6 +18,8 @@ const resolveQueue =
       return process.env.RABBIT_HOLE_INDEX_BUILDING_VIOLATION_QUEUE;
     case TYPES.COMPLAINT:
       return process.env.RABBIT_HOLE_INDEX_BUILDING_COMPLAINT_QUEUE;
+    case TYPES.LITIGATION:
+      return process.env.RABBIT_HOLE_INDEX_BUILDING_LITIGATION_QUEUE;
     }
   };
 
@@ -27,6 +30,8 @@ const resolveBulkOperationBuilder =
       return Building.upsertViolations;
     case TYPES.COMPLAINT:
       return Building.upsertComplaints;
+    case TYPES.LITIGATION:
+      return Building.upsertLitigations;
     }
   };
 

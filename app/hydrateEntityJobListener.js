@@ -30,6 +30,10 @@ const getRoutingKeys =
       return [
         'index.building-registration',
       ];
+    case 'litigation':
+      return [
+        'index.building-litigation',
+      ];
     }
   };
 

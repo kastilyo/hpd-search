@@ -42,11 +42,15 @@ RabbitHole.create().then(rabbitHole => Promise.all([
         R.zip(R.splitEvery(2, operations), results.items)
           .map(
             ([[action, payload], result]) =>
-              publisher.publish('index-result', {
+              ({
                 action,
                 payload,
                 result,
-              }));
+              })
+          ).filter(({action, result}) => {
+            const [type] = Object.keys(action);
+            return result[type].error;
+          }).map(message => publisher.publish('index-result', message));
 
     searchClient.bulk(operations)
       .then(results => Promise.all([

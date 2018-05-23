@@ -7,7 +7,7 @@ const { NycOpenData } = require('./../app/bootstrap');
 const BulkOperation = require('./../src/bulkOperation')
   , Domain = require('./../src/domain');
 
-const groupEntitiesByBuildingId = require('./groupEntitiesByBuilding');
+const groupEntitiesByBuildingId = require('./groupEntitiesByBuildingId');
 
 NycOpenData
   .create()

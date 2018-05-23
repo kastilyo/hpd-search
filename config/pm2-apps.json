@@ -7,12 +7,6 @@
       "instances": 3
     },
     {
-      "name": "hydrate-entity-listener",
-      "script": "./app/listener/hydrateEntity.js",
-      "exec_mode": "cluster",
-      "instances": 3
-    },
-    {
       "name": "hydrate-bulk-upsert-listener",
       "script": "./app/listener/hydrateBulkUpsert/index.js",
       "exec_mode": "cluster",
@@ -22,7 +16,7 @@
       "name": "geocode-building-listener",
       "script": "./app/listener/geocodeBuilding.js",
       "exec_mode": "cluster",
-      "instances": 3
+      "instances": 2
     },
     {
       "name": "bulk-listener",

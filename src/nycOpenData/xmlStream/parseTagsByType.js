@@ -4,18 +4,16 @@ const axios = require('axios')
   , sax = require('sax-stream')
   , url = require('url');
 
-const PAGE_PATHS = require('./pagePaths')
-  , TAGS = require('./tags');
+const TAGS = require('./tags');
 
 const BASE_URL = 'http://www1.nyc.gov';
-
 const httpClient = axios.create({
   baseURL: BASE_URL,
 });
 
 const parseTagsByType =
-  type =>
-    httpClient.get(PAGE_PATHS[type])
+  (type, pagePath) =>
+    httpClient.get(pagePath)
       .then(response => scrapeLatestZip(response.data))
       .then(response => getTagStream(type, response.data));
 

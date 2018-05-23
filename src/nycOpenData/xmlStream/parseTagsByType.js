@@ -30,7 +30,7 @@ const findLatestZipPath =
     $('.content-container a')
       .toArray()
       .map(anchor => anchor.attribs.href || '')
-      .filter(href => /.*\.zip/.test(href))
+      .filter(href => /.*\d{8}\.zip/.test(href))
       .map(href => url.parse(href).path)
       .sort()
       .pop();

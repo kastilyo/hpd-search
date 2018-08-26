@@ -1,6 +1,6 @@
-module.exports = aggregationName => (name, field, size = null) => ({
+module.exports = aggregationType => (name, field, size = null) => ({
   [name]: {
-    [aggregationName]: {
+    [aggregationType]: {
       ...size ? { size } : {},
       field,
     }

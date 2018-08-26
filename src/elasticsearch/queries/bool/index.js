@@ -48,14 +48,16 @@ const [
 
 
 const bool = body => ({
-  ...(body.hasOwnProperty('minimumShouldMatch')
-    ? { minimum_should_match : body.minimumShouldMatch }
-    : {}),
-  ...body.hasOwnProperty('boost') ? { boost : body.boost } : {},
-  ...body.hasOwnProperty('must') ? must(body.must) : {},
-  ...body.hasOwnProperty('mustNot') ? mustNot(body.mustNot): {},
-  ...body.hasOwnProperty('should') ? should(body.should): {},
-  ...body.hasOwnProperty('filter') ? filter(body.filter): {},
+  bool: {
+    ...(body.hasOwnProperty('minimumShouldMatch')
+      ? { minimum_should_match: body.minimumShouldMatch }
+      : {}),
+    ...body.hasOwnProperty('boost') ? { boost: body.boost } : {},
+    ...body.hasOwnProperty('must') ? must(body.must) : {},
+    ...body.hasOwnProperty('mustNot') ? mustNot(body.mustNot) : {},
+    ...body.hasOwnProperty('should') ? should(body.should) : {},
+    ...body.hasOwnProperty('filter') ? filter(body.filter) : {},
+  }
 });
 
 module.exports = Object.assign(bool, {

@@ -11,4 +11,5 @@ module.exports = {
    * Geo-point datatype field.
    */
   geoCentroid: geoAggregation('geo_centroid'),
+  terms: require('./terms'),
 };

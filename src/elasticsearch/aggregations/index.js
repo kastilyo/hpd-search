@@ -13,4 +13,5 @@ module.exports = {
    */
   geoCentroid: geoAggregation('geo_centroid'),
   terms: fieldAggregation('terms'),
+  nested: require('./nested'),
 };

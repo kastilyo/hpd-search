@@ -2,21 +2,15 @@
   "apps": [
     {
       "name": "parse-listener",
-      "script": "./app/listener/parse.js",
-      "exec_mode": "cluster",
-      "instances": 3
+      "script": "./app/listener/parse.js"
     },
     {
       "name": "hydrate-bulk-upsert-listener",
-      "script": "./app/listener/hydrateBulkUpsert/index.js",
-      "exec_mode": "cluster",
-      "instances": 3
+      "script": "./app/listener/hydrateBulkUpsert/index.js"
     },
     {
       "name": "geocode-building-listener",
-      "script": "./app/listener/geocodeBuilding.js",
-      "exec_mode": "cluster",
-      "instances": 2
+      "script": "./app/listener/geocodeBuilding.js"
     },
     {
       "name": "bulk-listener",

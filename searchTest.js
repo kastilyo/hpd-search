@@ -36,6 +36,10 @@ const buildingSearch = search({
         aggregations.terms('code', 'complaints.problems.code', 1000),
         aggregations.terms('majorCategory', 'complaints.problems.majorCategory', 1000),
         aggregations.terms('minorCategory', 'complaints.problems.minorCategory', 1000),
+        aggregations.terms('spaceType', 'complaints.problems.spaceType', 1000),
+        aggregations.terms('status', 'complaints.problems.status', 1000),
+        aggregations.terms('type', 'complaints.problems.type', 1000),
+        aggregations.terms('unitType', 'complaints.problems.unitType', 1000),
       ),
     ),
   )

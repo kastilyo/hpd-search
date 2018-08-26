@@ -28,6 +28,16 @@ const buildingSearch = search({
     aggregations.terms('management', 'management', 1000),
     aggregations.terms('postalCode', 'postalCode', 1000),
     aggregations.terms('status', 'status', 1000),
+    aggregations.nested(
+      'complaints',
+      aggregations.terms('status', 'complaints.status', 1000),
+      aggregations.nested(
+        'complaints.problems',
+        aggregations.terms('code', 'complaints.problems.code', 1000),
+        aggregations.terms('majorCategory', 'complaints.problems.majorCategory', 1000),
+        aggregations.terms('minorCategory', 'complaints.problems.minorCategory', 1000),
+      ),
+    ),
   )
 });
 

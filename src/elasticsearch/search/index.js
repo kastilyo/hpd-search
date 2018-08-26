@@ -4,8 +4,8 @@ const aggs = require('./aggs')
 
 const search = body => ({
   ...body.hasOwnProperty('size') ? { size: body.size } : {},
-  ...aggs(body.hasOwnProperty('aggs') ? body.aggs : {}),
-  ...query(body.hasOwnProperty('query') ? body.query : {}),
+  ...body.hasOwnProperty('aggs') ? aggs(body.aggs) : {},
+  ...body.hasOwnProperty('query') ? query(body.query) : {},
 });
 
 module.exports = Object.assign(search, {

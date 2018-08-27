@@ -9,7 +9,7 @@ module.exports =
             lat: geosupportData.address.latitude,
             lon: geosupportData.address.longitude,
           },
-          internalLocation: {
+          locationInternal: {
             lat: geosupportData.address.latitudeInternalLabel,
             lon: geosupportData.address.longitudeInternalLabel,
           }

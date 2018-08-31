@@ -1,5 +1,5 @@
 const BOROUGHS = require('../../../domain/boroughs')
-  , { queries } = require('../../../elasticsearch');
+  , { queries } = require('../../../../lib/elasticsearch').dsl;
 
 const byBorough = borough => queries.term('borough', borough);
 const hasField = field => queries.exists(field);

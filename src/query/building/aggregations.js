@@ -1,4 +1,4 @@
-const { aggregations } = require('../../elasticsearch');
+const { aggregations } = require('../../../lib/elasticsearch').dsl;
 
 module.exports = {
   viewport: () => aggregations.geoBounds('viewport', 'location'),

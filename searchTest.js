@@ -1,4 +1,4 @@
-const { search, queries, aggregations } = require('./src/elasticsearch')
+const { search, queries, aggregations } = require('./lib/elasticsearch').dsl
   , { building } = require('./src/query')
   , axios = require('axios');
 

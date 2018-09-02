@@ -1,8 +1,11 @@
-const R = require('ramda');
+const R = require('ramda')
+  , update = require('./update');
 
 module.exports =
-  registration =>
-    [
-      { update: { _type: 'building', _id: registration.buildingId } },
-      { doc: { registration: R.omit(['buildingId'], registration) }, doc_as_upsert: true },
-    ];
+  registration => update(registration.buildingId)(R.pipe(
+    R.omit('buildingId'),
+    registration => ({
+      doc: { registration },
+      docAsUpsert: true,
+    })
+  )(registration));

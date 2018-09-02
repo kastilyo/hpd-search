@@ -1,18 +1,15 @@
-const R = require('ramda');
+const R = require('ramda')
+  , update = require('./update');
 
 module.exports =
   (buildingId, complaints) =>
-    [
-      { update: { _type: 'building', _id: buildingId } },
-      {
+    update(buildingId)(R.pipe(
+      R.map(R.omit(['buildingId'])),
+      complaints => ({
         script: {
           id: 'upsert-complaints-to-building',
-          params: {
-            complaints: R.map(R.omit(['buildingId']), complaints),
-          }
+          params: { complaints },
         },
-        upsert: {
-          complaints: R.map(R.omit(['buildingId']), complaints),
-        },
-      },
-    ];
+        upsert: { complaints },
+      })
+    )(complaints));

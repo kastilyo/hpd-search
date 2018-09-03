@@ -33,6 +33,7 @@
     "ramda": "^0.25.0",
     "rxjs": "^6.3.1",
     "sax-stream": "^1.2.3",
-    "unzipper": "^0.8.13"
+    "unzipper": "^0.8.13",
+    "xml-flow": "^1.0.2"
   }
 }

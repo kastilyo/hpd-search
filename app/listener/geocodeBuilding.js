@@ -5,19 +5,19 @@ const geoclient = Geoclient.create();
 
 const getGeosupportData =
   building => Promise.all([
-    geoclient.address({
+    geoclient.getByAddress({
       houseNumber: building.houseNumber,
       street: building.streetName,
       borough: building.borough,
       zip: building.postalCode,
     }),
-    geoclient.bbl({
+    geoclient.getByBbl({
       borough: building.borough,
       block: building.block,
       lot: building.lot,
     }),
     building.bin
-      ? geoclient.bin({
+      ? geoclient.getByBin({
         bin: building.bin,
       })
       : {},

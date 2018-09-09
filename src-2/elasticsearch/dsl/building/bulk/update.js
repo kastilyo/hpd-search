@@ -1,4 +1,4 @@
-const { bulk } = require('./../../../../../lib/elasticsearch/dsl')
+const { Dsl } = require('./../../../../../lib/elasticsearch');
 
 module.exports =
-  id => options => bulk.update(id, 'building', options);
+  id => options => Dsl.Bulk.update(id, 'building', options);

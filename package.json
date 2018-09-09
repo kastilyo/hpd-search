@@ -19,12 +19,8 @@
     "testdouble": "^3.8.0"
   },
   "dependencies": {
-    "@kastilyo/rabbit-hole": "0.0.4",
     "axios": "^0.18.0",
-    "baconjs": "^2.0.7",
     "cheerio": "^1.0.0-rc.2",
-    "circular-json": "^0.5.3",
-    "csv-stream": "^0.2.0",
     "csv-streamify": "^4.0.0",
     "dotenv": "^5.0.1",
     "elasticsearch": "^14.2.2",
@@ -32,9 +28,7 @@
     "pm2": "^2.10.4",
     "ramda": "^0.25.0",
     "rxjs": "^6.3.1",
-    "sax-stream": "^1.2.3",
     "unzip-stream": "^0.3.0",
-    "unzipper": "^0.8.13",
     "xml-flow": "^1.0.2"
   }
 }

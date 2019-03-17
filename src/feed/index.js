@@ -1,5 +1,6 @@
 /**
- * Stream of domain entities parsed from HPD streaming files
+ * Rx Observables of domain entities parsed from HPD streaming files thus the dependency of the HPD
+ * client
  */
 const create =
   hpd => ({

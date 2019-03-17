@@ -21,6 +21,7 @@ const queueNames = [
   'search-index',
 ];
 
+// certain operations are done via the management REST API. the rest are through the package
 const managementApi = axios.create({
   baseURL: `http://${AMQP_HOSTNAME}:${AMQP_MANAGEMENT_PORT}/api/`,
   auth: { username: AMQP_USERNAME, password: AMQP_PASSWORD }
@@ -31,80 +32,83 @@ const flatten = (toFlattens) => toFlattens.reduce(
   []
 );
 
-// first, create the vhost
-managementApi.put(`vhosts/${AMQP_VHOST}`)
+((async function main() {
+  // first, create the vhost
+  await managementApi.put(`vhosts/${AMQP_VHOST}`);
+
   // set vhost permissions to *.*.* for user
-  .then(() => managementApi.put(`permissions/${AMQP_VHOST}/${AMQP_USERNAME}`, {
+  await managementApi.put(`permissions/${AMQP_VHOST}/${AMQP_USERNAME}`, {
     vhost: AMQP_VHOST,
     username: AMQP_USERNAME,
     configure: '.*',
     write: '.*',
     read: '.*'
-  }))
+  });
+
   // create an ha-mode: all policy named ha-all
-  .then(() => managementApi.put(`policies/${AMQP_VHOST}/ha-all`, {
+  await managementApi.put(`policies/${AMQP_VHOST}/ha-all`, {
     pattern: `^${exchangeName}`,
     definition: {
       'ha-mode': 'all'
     }
-  }))
-  .then(() => amqp.connect({
+  });
+
+  const connection = await amqp.connect({
     hostname: AMQP_HOSTNAME,
     port: AMQP_PORT,
     username: AMQP_USERNAME,
     password: AMQP_PASSWORD,
     vhost: AMQP_VHOST,
-  }))
-  .then(connection => connection.createChannel()
-    .then(async channel => {
-      const exchangeOptions = { durable: true, auto_delete: false };
-      const type = 'topic';
-      await Promise.all([
-        channel.assertExchange(exchangeName, type, exchangeOptions),
-        channel.assertExchange(`${exchangeName}-dead`, type, exchangeOptions)
-      ]);
-      return channel;
-    })
-    // create the queues and their corresponding dead letter queues
-    .then(async channel => {
-      const queueOptions = { durable: true, auto_delete: false };
-      await Promise.all(flatten(queueNames.map(queueName => [
-        channel.assertQueue(queueName, {
-          ...queueOptions,
-          arguments: {
-            'x-dead-letter-routing-key': queueName,
-            'x-dead-letter-exchange': `${exchangeName}-dead`,
-          }
-        }),
-        channel.assertQueue(`${queueName}-dead`, queueOptions),
-      ])));
-      return channel;
-    })
-    // create regular queue bindings
-    .then(async channel => {
-      // create the queues and their corresponding dead letter queues
-      const queueNamesAndBindings = [
-        ['parse', [
-          'parse.*'
-        ]],
-        ['geoclient', [
-          'building.parsed'
-        ]],
-        ['search-operation', [
-          'hydrate-bulk-upsert'
-        ]],
-        ['search-index', [
-          'bulk-upsert-hydrated'
-        ]],
-      ];
-      await Promise.all(flatten(queueNamesAndBindings.map(
-        ([queueName, bindings]) => bindings.map(binding => channel.bindQueue(queueName, exchangeName, binding))
-      )));
-      return channel;
-    })
-    // create dead queue bindings
-    .then(channel => Promise.all(queueNames.map(queueName => channel.bindQueue(`${queueName}-dead`, `${exchangeName}-dead`, queueName))).then(() => channel))
-    .then(channel => channel.close())
-    .then(() => connection.close())
-  )
-  .catch(error => console.log(error));
+  });
+
+  const channel = await connection.createChannel();
+
+  // create exchanges
+  const exchangeOptions = { durable: true, auto_delete: false };
+  const exchangeType = 'topic';
+  await Promise.all([
+    channel.assertExchange(exchangeName, exchangeType, exchangeOptions),
+    channel.assertExchange(`${exchangeName}-dead`, exchangeType, exchangeOptions)
+  ]);
+
+  // create the queues and their corresponding dead letter queues
+  const queueOptions = { durable: true, auto_delete: false };
+  await Promise.all(flatten(queueNames.map(queueName => [
+    channel.assertQueue(queueName, {
+      ...queueOptions,
+      arguments: {
+        'x-dead-letter-routing-key': queueName,
+        'x-dead-letter-exchange': `${exchangeName}-dead`,
+      }
+    }),
+    channel.assertQueue(`${queueName}-dead`, queueOptions),
+  ])));
+
+  // create regular queue bindings
+  const queueNamesAndBindings = [
+    ['parse', [
+      'parse.*'
+    ]],
+    ['geoclient', [
+      'building.parsed'
+    ]],
+    ['search-operation', [
+      'hydrate-bulk-upsert'
+    ]],
+    ['search-index', [
+      'bulk-upsert-hydrated'
+    ]],
+  ];
+  await Promise.all(flatten(queueNamesAndBindings.map(
+    ([queueName, bindings]) => bindings.map(binding => channel.bindQueue(queueName, exchangeName, binding))
+  )));
+
+  // create dead queue bindings
+  await Promise.all(queueNames.map(
+    queueName => channel.bindQueue(`${queueName}-dead`, `${exchangeName}-dead`, queueName))
+  );
+
+  // teardown
+  await channel.close();
+  await connection.close();
+})()).catch(error => console.log(error));

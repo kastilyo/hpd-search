@@ -19,12 +19,12 @@
     "testdouble": "^3.8.0"
   },
   "dependencies": {
+    "@elastic/elasticsearch": "0.1.0-beta.2",
     "amqplib": "^0.5.3",
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
     "csv-streamify": "^4.0.0",
     "dotenv": "^5.0.1",
-    "elasticsearch": "^14.2.2",
     "luxon": "^1.2.0",
     "pm2": "^2.10.4",
     "ramda": "^0.25.0",

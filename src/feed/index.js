@@ -1,3 +1,6 @@
+/**
+ * Stream of domain entities parsed from HPD streaming files
+ */
 const create =
   hpd => ({
     building$: () => require('./building$')(hpd),

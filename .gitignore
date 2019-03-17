@@ -27,4 +27,11 @@ build/Release
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
 
+# App config
 config/.env
+
+# Docker-related
+docker/rmq/.env
+docker/elasticsearch/.env
+docker/elasticsearch/data
+!docker/elasticsearch/data/.gitkeep

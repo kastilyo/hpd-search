@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 require('../app/bootstrap');
 
 const amqp = require('amqplib')

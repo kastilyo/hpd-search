@@ -3,7 +3,13 @@ require('../app/bootstrap');
 
 const amqp = require('amqplib');
 
-const { TYPES } = require('./../src/entities');
+const {
+  TYPE_BUILDING,
+  TYPE_VIOLATION,
+  TYPE_REGISTRATION,
+  TYPE_LITIGATION,
+  TYPE_COMPLAINT,
+} = require('./../src/entities');
 
 const {
   AMQP_VHOST,
@@ -32,7 +38,15 @@ const {
 
   const exchangeName = 'hpd';
 
-  await Promise.all(TYPES.map(type => channel.publish(
+  const types = [
+    TYPE_BUILDING,
+    TYPE_VIOLATION,
+    TYPE_REGISTRATION,
+    TYPE_LITIGATION,
+    TYPE_COMPLAINT,
+  ];
+
+  await Promise.all(types.map(type => channel.publish(
     exchangeName,
     `parse.${type}`,
     Buffer.from(JSON.stringify({

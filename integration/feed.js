@@ -1,10 +1,10 @@
+require('./../app/bootstrap');
+
 const Rx = require('rxjs')
   , Hpd = require('./../lib/hpd')
-  , Feed = require('./../src-2/feed');
+  , Feed = require('./../src/feed');
 
-const SODA_APP_TOKEN = 'REPLACE_ME';
-
-const feed = Feed.create(Hpd.create({ sodaAppToken: SODA_APP_TOKEN }));
+const feed = Feed.create(Hpd.create({ sodaAppToken: process.env.SODA_APP_TOKEN }));
 
 Rx.merge(
   feed.building$(),
@@ -12,7 +12,8 @@ Rx.merge(
   feed.litigation$(),
   feed.registration$(),
   feed.violation$(),
-).subscribe(
-  data => console.log(data),
-  error => console.error('An error occurred somewhere', error)
-);
+)
+  .subscribe(
+    data => console.log(data),
+    error => console.error('An error occurred somewhere', error)
+  );

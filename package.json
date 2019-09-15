@@ -15,21 +15,21 @@
   "license": "MIT",
   "devDependencies": {
     "eslint": "^4.19.1",
-    "mocha": "^5.1.1",
-    "testdouble": "^3.8.0"
+    "mocha": "^5.2.0",
+    "testdouble": "^3.12.4"
   },
   "dependencies": {
     "@elastic/elasticsearch": "0.1.0-beta.2",
-    "amqplib": "^0.5.3",
-    "axios": "^0.18.0",
-    "cheerio": "^1.0.0-rc.2",
+    "amqplib": "^0.5.5",
+    "axios": "^0.18.1",
+    "cheerio": "^1.0.0-rc.3",
     "csv-streamify": "^4.0.0",
     "dotenv": "^5.0.1",
-    "luxon": "^1.2.0",
+    "luxon": "^1.17.3",
     "pm2": "^2.10.4",
     "ramda": "^0.25.0",
-    "rxjs": "^6.3.1",
+    "rxjs": "^6.5.3",
     "unzip-stream": "^0.3.0",
-    "xml-flow": "^1.0.2"
+    "xml-flow": "^1.0.3"
   }
 }
